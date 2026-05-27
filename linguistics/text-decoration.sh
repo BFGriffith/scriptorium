@@ -162,7 +162,7 @@ convert_to_BOLDfraktur() {
   done
   echo "$result"
 }
-# ƒunction to convert input "TEXT／text" into 𝙼𝙾𝙽𝙾𝚂𝙿𝙰𝙲𝙴 alphabetic characters
+# ƒunction to convert input "TEXT／text" into 𝙼𝙾𝙽𝙾𝚂𝙿𝙰𝙲𝙴 alphanumeric characters
 convert_to_monospace() {
   local input="$1"
   local result=""
@@ -176,6 +176,26 @@ convert_to_monospace() {
         result+="$(echo "$char" | $SED 's/a/𝚊/;s/b/𝚋/;s/c/𝚌/;s/d/𝚍/;s/e/𝚎/;s/f/𝚏/;s/g/𝚐/;s/h/𝚑/;s/i/𝚒/;s/j/𝚓/;s/k/𝚔/;s/l/𝚕/;s/m/𝚖/;s/n/𝚗/;s/o/𝚘/;s/p/𝚙/;s/q/𝚚/;s/r/𝚛/;s/s/𝚜/;s/t/𝚝/;s/u/𝚞/;s/v/𝚟/;s/w/𝚠/;s/x/𝚡/;s/y/𝚢/;s/z/𝚣/')";;
       [0-9])
         result+="$(echo "$char" | $SED 's/0/𝟶/;s/1/𝟷/;s/2/𝟸/;s/3/𝟹/;s/4/𝟺/;s/5/𝟻/;s/6/𝟼/;s/7/𝟽/;s/8/𝟾/;s/9/𝟿/')";;
+      *)
+        result+="$char";;
+    esac
+  done
+  echo "$result"
+}
+# ƒunction to convert input "TEXT／text" into 𝕕𝕠𝕦𝕓𝕝𝕖‑𝕊𝕋ℝ𝕌ℂ𝕂 alphanumeric characters
+convert_to_struck() {
+  local input="$1"
+  local result=""
+  local char
+  for ((i=0; i<${#input}; i++)); do
+    char="${input:i:1}"
+    case "$char" in
+      [A-Z])
+        result+="$(echo "$char" | $SED 's/A/𝔸/;s/B/𝔹/;s/C/ℂ/;s/D/𝔻/;s/E/𝔼/;s/F/𝔽/;s/G/𝔾/;s/H/ℍ/;s/I/𝕀/;s/J/𝕁/;s/K/𝕂/;s/L/𝕃/;s/M/𝕄/;s/N/ℕ/;s/O/𝕆/;s/P/ℙ/;s/Q/ℚ/;s/R/ℝ/;s/S/𝕊/;s/T/𝕋/;s/U/𝕌/;s/V/𝕍/;s/W/𝕎/;s/X/𝕏/;s/Y/𝕐/;s/Z/ℤ/')";;
+      [a-z])
+        result+="$(echo "$char" | $SED 's/a/𝕒/;s/b/𝕓/;s/c/𝕔/;s/d/𝕕/;s/e/𝕖/;s/f/𝕗/;s/g/𝕘/;s/h/𝕙/;s/i/𝕚/;s/j/𝕛/;s/k/𝕜/;s/l/𝕝/;s/m/𝕞/;s/n/𝕟/;s/o/𝕠/;s/p/𝕡/;s/q/𝕢/;s/r/𝕣/;s/s/𝕤/;s/t/𝕥/;s/u/𝕦/;s/v/𝕧/;s/w/𝕨/;s/x/𝕩/;s/y/𝕪/;s/z/𝕫/')";;
+      [0-9])
+        result+="$(echo "$char" | $SED 's/0/𝟘/;s/1/𝟙/;s/2/𝟚/;s/3/𝟛/;s/4/𝟜/;s/5/𝟝/;s/6/𝟞/;s/7/𝟟/;s/8/𝟠/;s/9/𝟡/')";;
       *)
         result+="$char";;
     esac
@@ -207,6 +227,7 @@ echo "For 𝘪𝘵𝘢𝘭𝘪𝘤 𝘚𝘈𝘕𝘚-𝘴𝘦𝘳𝘪𝘧 mathe
 echo "For 𝓑𝓞𝓛𝓓 𝓼𝓬𝓻𝓲𝓹𝓽 mathematical calligraphic letters, enter one of these aliases꞉ “scr”／“SCR” or “bSCR”／“Bscr” ⎆"
 echo "For 𝕭𝕺𝕷𝕯 𝖋𝖗𝖆𝖐𝖙𝖚𝖗 mathematical ornate letters, enter one of these aliases꞉ “bf”／“BF” or “bF” ⎆"
 echo "For 𝙼𝙾𝙽𝙾𝚂𝙿𝙰𝙲𝙴 letters or numbers, enter one of these aliases꞉ “mono” or “monospace” ⎆"
+echo "For 𝕕𝕠𝕦𝕓𝕝𝕖‑𝕊𝕋ℝ𝕌ℂ𝕂 letters or numbers, enter one of these aliases꞉ “ds” or “DS” ⎆"
 echo "¯\_(ツ)_/¯ "
 read -p "How would you like to decorate your text‽ " choice
 
@@ -239,6 +260,9 @@ case "$choice" in
   mono|monospace)
     DECORATION_SPECIFIED="𝙼𝙾𝙽𝙾𝚂𝙿𝙰𝙲𝙴"
     result=$(convert_to_monospace "$input_text");;
+  ds|DS)
+    DECORATION_SPECIFIED="𝕕𝕠𝕦𝕓𝕝𝕖‑𝕊𝕋ℝ𝕌ℂ𝕂"
+    result=$(convert_to_struck "$input_text");;
   *)
     echo "⚠️ You have entered an invalid text-decoration option selection alias…"
     echo "⛔Exiting program❗🪦"
